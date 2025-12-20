@@ -8,7 +8,7 @@ const javaVersionManifestURL = "https://launchermeta.mojang.com/mc/game/version_
 // 浏览器高度
 const windowHeight = window.innerHeight
 
-const javaVersionManifestInfo = ref([])
+const javaVersionManifestInfo: any = ref([])
 /**
  * 组件加载完成之后, 获取服务端下载路径
  */
@@ -23,7 +23,7 @@ onMounted(async () => {
  *
  * @param row 当行数据
  */
-const download = async (row: string) => {
+const download = async (row: any) => {
     // 获取版本信息
     const versionInfo = await axios.get(row.url)
     // 服务器jar包下载地址
@@ -46,7 +46,7 @@ interface version {
  */
 const typeFilter = (
     value: string,
-    row: version,
+    row: any,
     column: TableColumnCtx<version>
 ) => {
     // 获取这一列的列名
