@@ -2,19 +2,22 @@
 import {onMounted, ref} from "vue";
 import axios from "axios";
 import type {TableColumnCtx} from "element-plus";
+import type {version} from "../ts/entity/VersionEntity.ts"
 
 // Java版服务端版本清单URL
 const javaVersionManifestURL = "https://launchermeta.mojang.com/mc/game/version_manifest.json"
 // 浏览器高度
 const windowHeight = window.innerHeight
 
-const javaVersionManifestInfo: any = ref([])
+const javaVersionManifestInfo = ref<version[]>([])
 /**
  * 组件加载完成之后, 获取服务端下载路径
  */
 onMounted(async () => {
-        javaVersionManifestInfo.value = await axios.get(javaVersionManifestURL);
-        javaVersionManifestInfo.value = javaVersionManifestInfo.value.data.versions;
+        // 获取初始数据
+        const tem = await axios.get(javaVersionManifestURL);
+        // 获取版本信息,赋值
+        javaVersionManifestInfo.value = tem.data.versions;
     }
 )
 
@@ -23,18 +26,13 @@ onMounted(async () => {
  *
  * @param row 当行数据
  */
-const download = async (row: any) => {
+const download = async (row: version) => {
     // 获取版本信息
     const versionInfo = await axios.get(row.url)
     // 服务器jar包下载地址
     const serverJarUrl = versionInfo.data.downloads.server.url
     // 打开新窗口进行下载
     window.open(serverJarUrl, "_blank");
-}
-
-interface version {
-    id: string
-    type: string
 }
 
 /**
